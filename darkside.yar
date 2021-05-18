@@ -19,3 +19,22 @@ rule DarksideRansomware{
     condition:
         uint16(0) == 0x5A4D and (all of ($importdll*)) and (all of ($s*)) and (any of ($h*))
 }
+
+rule DraksideRansomware_ELF{
+    meta:
+        author = "PresidentSU"
+        description = "Drakside ransomware elf file"
+        file_type = "elf"
+    strings:
+        $s1 = "darkside_readme.txt" wide
+        $s2 = "http://darksidfqzcuhtk2.onion" nocase
+        $s3 = "https://torproject.org/"
+        $s4 = "Your computers and servers are encrypted, backups are deleted. We use strong encryption algorithms, so you cannot decrypt your data."
+        $s5 = "DO NOT MODIFY or try to RECOVER any files yourself. We WILL NOT be able to RESTORE them"
+        $s7 = "All our decryption software is perfectly tested and will decrypt your data. We will also provide support in case of problems."
+        $s8 = "PartialFileCrypter" nocase
+        $s9 = "Extenstion to Apply for Ecrypted files" nocase        
+        $s10 = "N8CryptoPP"
+    condition:
+        uint32(0) == 0x464C457F and 7 of ($s*)
+}
